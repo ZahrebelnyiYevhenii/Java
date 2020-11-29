@@ -20,6 +20,9 @@ public class Client {
         this.fullName = fullName;
     }
 
+    public Client() {
+    }
+
     public Client(Long id, String fullName) {
         this.id = id;
         this.fullName = fullName;
