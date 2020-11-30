@@ -4,6 +4,22 @@ public class Client {
     private Long id;
     private String fullName;
 
+    public Client() {
+    }
+
+    public Client(Long id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
+
     public Long getId() {
         return id;
     }
@@ -20,19 +36,4 @@ public class Client {
         this.fullName = fullName;
     }
 
-    public Client() {
-    }
-
-    public Client(Long id, String fullName) {
-        this.id = id;
-        this.fullName = fullName;
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", fullName='" + fullName + '\'' +
-                '}';
-    }
 }

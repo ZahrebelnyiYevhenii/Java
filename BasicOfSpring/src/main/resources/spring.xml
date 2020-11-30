@@ -7,7 +7,14 @@
         <constructor-arg value="1"/>
         <constructor-arg value="John Smith"/>
     </bean>
-
+    <bean id="event" class="entity.Event" scope="prototype">
+        <constructor-arg>
+            <bean class="java.util.Date"/>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="java.text.DateFormat" factory-method="getDateTimeInstance"/>
+        </constructor-arg>
+    </bean>
     <bean id="eventLogger" class="logger.ConsoleEventLogger"/>
     <bean id="app" class="startProject.App">
         <constructor-arg ref="client"/>
