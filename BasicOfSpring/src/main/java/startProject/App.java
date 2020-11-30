@@ -7,7 +7,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
-    private static ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+    private static String[] xmls = new String[]{"spring.xml", "loggers.xml", "other.xml"};
+    private static ConfigurableApplicationContext parent = new ClassPathXmlApplicationContext(xmls);
+    private static ConfigurableApplicationContext child = new ClassPathXmlApplicationContext(xmls, parent);
     private Client client;
     private EventLogger eventLogger;
 
@@ -17,16 +19,16 @@ public class App {
     }
 
     public static void main(String[] args) {
-        App app = (App) applicationContext.getBean("app");
+        App app = (App) parent.getBean("app");
 
         app.logEvent("Some event for user 1");
         app.logEvent("Some event for user 2");
 
-        applicationContext.close();
+        parent.close();
     }
 
     private void logEvent(String msg) {
-        Event event = (Event) applicationContext.getBean("event");
+        Event event = (Event) child.getBean("event");
 
         if (msg.contains(client.getId().toString())) {
             String message = msg.replaceAll(client.getId().toString(), client.getFullName());
