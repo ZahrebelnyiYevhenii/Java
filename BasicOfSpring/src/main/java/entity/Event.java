@@ -54,5 +54,11 @@ public class Event {
         this.date = date;
     }
 
+    public DateFormat getDf() {
+        return df;
+    }
 
+    public void setDf(DateFormat df) {
+        this.df = df;
+    }
 }
