@@ -3,11 +3,11 @@ package startProject;
 import entity.Client;
 import entity.Event;
 import logger.EventLogger;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
-    private static ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
+    private static ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring.xml");
     private Client client;
     private EventLogger eventLogger;
 
@@ -21,6 +21,8 @@ public class App {
 
         app.logEvent("Some event for user 1");
         app.logEvent("Some event for user 2");
+
+        applicationContext.close();
     }
 
     private void logEvent(String msg) {
