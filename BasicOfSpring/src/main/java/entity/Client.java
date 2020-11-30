@@ -3,6 +3,7 @@ package entity;
 public class Client {
     private Long id;
     private String fullName;
+    private String greeting;
 
     public Client() {
     }
@@ -36,4 +37,11 @@ public class Client {
         this.fullName = fullName;
     }
 
+    public String getGreeting() {
+        return greeting;
+    }
+
+    public void setGreeting(String greeting) {
+        this.greeting = greeting;
+    }
 }

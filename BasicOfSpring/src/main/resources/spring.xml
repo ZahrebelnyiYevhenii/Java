@@ -6,13 +6,20 @@
     <import resource="other.xml"/>
 
     <bean id="client" class="entity.Client">
+        <property name="greeting" value="Hello there!"/>
         <constructor-arg value="1"/>
         <constructor-arg value="John Smith"/>
     </bean>
 
     <bean id="app" class="startProject.App">
         <constructor-arg ref="client"/>
-        <constructor-arg ref="cacheEventLogger"/>
+        <constructor-arg ref="cacheLogger"/>
+        <constructor-arg>
+            <map>
+                <entry key="INFO" value-ref="consoleLogger"/>
+                <entry key="ERROR" value-ref="combinedLogger"/>
+            </map>
+        </constructor-arg>
     </bean>
 
 </beans>
