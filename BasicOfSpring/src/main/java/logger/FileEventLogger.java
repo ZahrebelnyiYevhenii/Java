@@ -2,10 +2,15 @@ package logger;
 
 import entity.Event;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 
+@Service
 public class FileEventLogger implements EventLogger {
     private String filename;
     private File file;
@@ -13,10 +18,11 @@ public class FileEventLogger implements EventLogger {
     public FileEventLogger() {
     }
 
-    public FileEventLogger(String filename) {
+    @Autowired
+    public FileEventLogger(@Value("src/main/resources/logger.txt") String filename) {
         this.filename = filename;
     }
-
+    @PostConstruct
     public void init() throws IOException {
         this.file = new File(filename);
         if (!file.canWrite()) {

@@ -1,10 +1,16 @@
 package logger;
 
 import entity.Event;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
+@Service
 public class CombinedEventLogger implements EventLogger {
+    @Resource(name = "combinedLoggers")
     private List<EventLogger> loggers;
 
     @Override
@@ -17,10 +23,6 @@ public class CombinedEventLogger implements EventLogger {
     }
 
     public CombinedEventLogger() {
-    }
-
-    public CombinedEventLogger(List<EventLogger> loggers) {
-        this.loggers = loggers;
     }
 
     public List<EventLogger> getLoggers() {

@@ -1,9 +1,16 @@
 package logger;
 
 import entity.Event;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CacheFileEventLogger extends FileEventLogger {
     private int cacheSize;
     private List<Event> cache;
@@ -12,18 +19,24 @@ public class CacheFileEventLogger extends FileEventLogger {
     public void logEvent(Event event) {
         cache.add(event);
 
-        if(cache.size() == cacheSize){
+        if (cache.size() == cacheSize) {
             writeEventsFromCache();
             cache.clear();
         }
     }
 
-    private void writeEventsFromCache(){
+    private void writeEventsFromCache() {
         cache.forEach(super::logEvent);
     }
 
-    public void destroy(){
-        if(!cache.isEmpty()){
+    @PostConstruct
+    public void init() {
+        this.cache = new ArrayList<>(cacheSize);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        if (!cache.isEmpty()) {
             writeEventsFromCache();
         }
     }
@@ -31,15 +44,14 @@ public class CacheFileEventLogger extends FileEventLogger {
     public CacheFileEventLogger() {
     }
 
-    public CacheFileEventLogger(int cacheSize, List<Event> cache) {
+    @Autowired
+    public CacheFileEventLogger(@Value("10") int cacheSize) {
         this.cacheSize = cacheSize;
-        this.cache = cache;
     }
 
-    public CacheFileEventLogger(String filename, int cacheSize, List<Event> cache) {
+    public CacheFileEventLogger(String filename, int cacheSize) {
         super(filename);
         this.cacheSize = cacheSize;
-        this.cache = cache;
     }
 
     public int getCacheSize() {

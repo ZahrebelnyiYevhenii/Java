@@ -1,21 +1,31 @@
 package startProject;
 
+import configuration.AppConfig;
+import configuration.LoggerConfig;
 import entity.Client;
 import entity.Event;
 import entity.EventType;
 import logger.EventLogger;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
+@Component
 public class App {
-    private static String[] xmls = new String[]{"spring.xml", "loggers.xml", "other.xml"};
-    private static ConfigurableApplicationContext parent = new ClassPathXmlApplicationContext(xmls);
-    private static ConfigurableApplicationContext child = new ClassPathXmlApplicationContext(xmls, parent);
+    @Autowired
+    private Event event;
+    @Autowired
     private Client client;
+    @Resource(name = "defaultLogger")
     private EventLogger eventLogger;
+    @Resource(name = "loggerMap")
     private Map<EventType, EventLogger> loggers;
+
+    public App() {
+    }
 
     public App(Client client, EventLogger eventLogger, Map<EventType, EventLogger> loggers) {
         this.client = client;
@@ -24,17 +34,19 @@ public class App {
     }
 
     public static void main(String[] args) {
-        App app = (App) parent.getBean("app");
-
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.register(AppConfig.class, LoggerConfig.class);
+        ctx.scan("");
+        ctx.refresh();
+        App app = (App) ctx.getBean("app");
         app.logEvent("Some event for user 1", EventType.INFO);
         app.logEvent("Some event for user 2", EventType.ERROR);
         app.logEvent("Some event for user 3", null);
 
-        parent.close();
+        ctx.close();
     }
 
     private void logEvent(String msg, EventType eventType) {
-        Event event = (Event) child.getBean("event");
         EventLogger logger = loggers.get(eventType);
 
         if (logger == null) {

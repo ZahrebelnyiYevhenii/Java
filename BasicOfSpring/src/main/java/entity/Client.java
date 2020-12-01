@@ -1,5 +1,7 @@
 package entity;
 
+import org.springframework.stereotype.Component;
+
 public class Client {
     private Long id;
     private String fullName;

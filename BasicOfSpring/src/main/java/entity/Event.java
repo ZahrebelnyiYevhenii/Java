@@ -1,10 +1,14 @@
 package entity;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.util.Date;
 
+@Component
 public class Event {
     private Long id;
     private String msg;
@@ -14,6 +18,7 @@ public class Event {
     public Event() {
     }
 
+    @Autowired
     public Event(Date date, DateFormat df) {
         SecureRandom random = new SecureRandom();
         this.id = (long) random.nextInt(10);
